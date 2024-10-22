@@ -1,0 +1,461 @@
+Phân tích hệ thống canteen ordering system
+
+1. Phân tích yêu cầu hệ thống
+Dựa trên các yêu cầu về chức năng đã đề cập, hệ thống có ba loại người dùng chính:
+
+Người dùng (Users): Người đặt hàng trong hệ thống, có thể là sinh viên, nhân viên, hoặc khách hàng.
+Nhân viên căng tin (Canteen Staff): Người quản lý các món ăn, đơn hàng, và hoạt động tại căng tin.
+Quản trị viên (Admin): Người quản lý toàn bộ hệ thống, người dùng, và nhân viên.
+
+
+2. Mô tả các chức năng chính
+2.1. Chức năng dành cho Người dùng
+Đăng ký và đăng nhập: 
+Người dùng có thể đăng ký tài khoản mới với các thông tin cơ bản như 
+tên, mã số sv, số điện thoại, email, và mật khẩu. 
+Sau khi đăng ký, người dùng có thể đăng nhập vào hệ thống.
+Xem và tìm kiếm món ăn: 
+Người dùng có thể xem danh sách các món ăn có sẵn trong ngày, 
+tìm kiếm món ăn theo tên hoặc loại.
+Đặt món ăn và thanh toán: Người dùng có thể chọn món, thêm vào giỏ hàng, và chọn thời gian nhận món. 
+Các phương thức thanh toán linh hoạt như ví điện tử, thẻ ngân hàng, hoặc thanh toán khi nhận hàng (cái này chắc k boom :).
+Quản lý giỏ hàng và đơn hàng: Người dùng có thể xem và quản lý các món trong giỏ hàng, kiểm tra trạng thái đơn hàng 
+(đang chuẩn bị, đã giao, đã hủy) và xem lịch sử đơn hàng.
+Nhận thông báo và đánh giá món ăn: Người dùng sẽ nhận thông báo về 
+tình trạng đơn hàng và có thể để lại đánh giá về món ăn.
+
+2.2. Chức năng dành cho Nhân viên căng tin
+Quản lý món ăn: Nhân viên có thể thêm, sửa, hoặc xóa món ăn từ thực đơn, cập nhật thông tin mô tả, giá cả, hình ảnh, và tình trạng sẵn có.
+Quản lý đơn hàng: Nhân viên có thể xem danh sách đơn hàng, cập nhật trạng thái đơn hàng, và thông báo cho khách hàng khi món ăn đã sẵn sàng.
+Quản lý nguyên liệu và dự báo nhu cầu: Hệ thống hỗ trợ quản lý lượng nguyên liệu hiện có, tự động cập nhật tình trạng món ăn khi hết nguyên liệu, và dự báo nhu cầu nguyên liệu dựa trên lịch sử đặt hàng.
+
+2.3. Chức năng dành cho Quản trị viên
+Quản lý tài khoản: Admin có quyền thêm, xóa, hoặc vô hiệu hóa tài khoản người dùng và nhân viên, cũng như thiết lập quyền hạn.
+Theo dõi hoạt động hệ thống: Admin có thể xem báo cáo tổng hợp về doanh thu, hoạt động của người dùng, và giám sát toàn bộ hệ thống. Ngoài ra, admin cũng có thể xử lý khiếu nại và đảm bảo hệ thống luôn hoạt động ổn định.
+Quản lý hệ thống thanh toán và dữ liệu: Admin có nhiệm vụ cấu hình và tích hợp các phương thức thanh toán, cũng như quản lý và theo dõi dữ liệu giao dịch và log hệ thống.
+
+2.4. Chức năng chung cho tất cả người dùng
+Quên mật khẩu và thay đổi thông tin cá nhân: Tất cả người dùng có thể khôi phục mật khẩu và cập nhật thông tin cá nhân của mình.
+Đăng xuất: Người dùng có thể đăng xuất khỏi hệ thống sau khi hoàn thành các tác vụ.
+
+3. Phân tích kiến trúc hệ thống
+3.1. Thành phần chính của hệ thống
+Frontend (Giao diện người dùng): Giao diện web hoặc ứng dụng di động nơi người dùng, nhân viên căng tin, và quản trị viên tương tác với hệ thống.
+Backend (Server): Xử lý logic hệ thống bao gồm đăng nhập, quản lý món ăn, đơn hàng, và thanh toán.
+Cơ sở dữ liệu (Database): Lưu trữ thông tin về người dùng, món ăn, đơn hàng, nguyên liệu, và log hệ thống.
+Hệ thống thanh toán: Tích hợp với các cổng thanh toán để thực hiện giao dịch qua ví điện tử, thẻ ngân hàng, hoặc thanh toán khi nhận hàng.
+3.2. Mô hình kiến trúc
+MVC (Model-View-Controller): Hệ thống có thể được thiết kế theo mô hình MVC để dễ dàng quản lý các thành phần như:
+Model: Quản lý dữ liệu và logic nghiệp vụ.
+View: Hiển thị dữ liệu và giao diện người dùng.
+Controller: Điều khiển các tác vụ giữa người dùng và hệ thống.
+
+
+
+Chức năng:
+user: 
+Đăng ký tài khoản: tên, mã sinh viên (optional), số điện thoại, email, password, có thể đăng nhập bằng google, facebook, zalo
+Đăng nhập bằng email và password 
+Đối với món ăn (gồm tên, hình ảnh, giá, số lượng, trạng thái còn hay không?, có thêm topping, thông tin chi tiết mô tả về món ăn), nhà hàng 
+Người dùng có tìm kiếm món ăn theo tên (có thể thêm phần lịch sử tìm kiếm)
+
+
+
+1. Chức năng dành cho Người dùng (Users)
+1.1. Đăng ký tài khoản
+Chức năng: Cho phép người dùng tạo tài khoản mới trong hệ thống để sử dụng các dịch vụ.
+Dữ liệu cần thiết:
+Họ và tên: full_name
+Số điện thoại: phone_number
+Địa chỉ email: email
+Mật khẩu: password
+Xác nhận mật khẩu: confirm_password
+Ngày sinh (để cung cấp ưu đãi vào ngày sinh nhật): birthday
+Địa chỉ: address (tuỳ chọn, có thể bổ sung sau)
+1.2. Đăng nhập
+Chức năng: Người dùng có thể đăng nhập với tài khoản đã đăng ký.
+Dữ liệu cần thiết:
+Địa chỉ email hoặc số điện thoại: email_or_phone
+Mật khẩu: password
+1.3. Xem danh sách món ăn
+Chức năng: Người dùng xem danh sách các món ăn có sẵn, thông tin về mô tả món, giá cả và tình trạng sẵn có.
+Dữ liệu cần hiển thị:
+Tên món ăn: food_name
+Mô tả món ăn: description
+Giá món ăn: price
+Hình ảnh món ăn: image_url
+Tình trạng sẵn có: availability
+Danh mục món ăn: category
+Thời gian chuẩn bị: preparation_time
+1.4. Tìm kiếm món ăn
+Chức năng: Cho phép người dùng tìm kiếm món ăn theo tên hoặc loại món.
+Dữ liệu tìm kiếm:
+Từ khoá tìm kiếm: search_keyword
+Loại món (ví dụ: món chính, món phụ, đồ uống): category
+Kết quả trả về gồm các món khớp với từ khoá hoặc danh mục tìm kiếm.
+1.5. Đặt món ăn
+Chức năng: Người dùng có thể chọn món ăn và thêm vào giỏ hàng để đặt món.
+Dữ liệu cần thiết:
+Tên món ăn: food_name
+Số lượng món: quantity
+Tổng giá: total_price
+Ghi chú (tuỳ chọn): note (VD: Không hành, ít muối)
+1.6. Chọn thời gian giao hàng
+Chức năng: Người dùng chọn thời gian nhận đồ ăn, có thể đặt lịch giao vào sáng, trưa, tối hoặc đặt lịch trước.
+Dữ liệu cần thiết:
+Giờ giao hàng (sáng/trưa/tối hoặc giờ cụ thể): delivery_time
+Ngày giao hàng (đối với đặt lịch trước): delivery_date
+1.7. Thanh toán
+Chức năng: Người dùng chọn phương thức thanh toán sau khi đã chọn món.
+Dữ liệu cần thiết:
+Phương thức thanh toán (ví điện tử, thẻ ngân hàng, thanh toán khi nhận hàng): payment_method
+Thông tin thanh toán (nếu thanh toán trực tuyến):
+Thông tin thẻ: card_info
+Mã ví điện tử: e_wallet_code
+Xác nhận mã OTP (nếu cần thiết): otp_code
+1.8. Quản lý giỏ hàng
+Chức năng: Người dùng có thể xem, thay đổi số lượng hoặc xóa món trong giỏ hàng.
+Dữ liệu cần hiển thị:
+Danh sách món trong giỏ hàng: cart_items[]
+Tên món ăn: food_name
+Số lượng: quantity
+Giá món: price
+Tổng tiền của giỏ hàng: total_cart_price
+1.9. Quản lý đơn hàng
+Chức năng: Người dùng có thể kiểm tra trạng thái đơn hàng của mình (đang chuẩn bị, đã giao, đã hủy).
+Dữ liệu cần hiển thị:
+Mã đơn hàng: order_id
+Ngày đặt hàng: order_date
+Trạng thái đơn hàng: order_status (VD: đang chuẩn bị, đã giao, đã hủy)
+Thời gian giao hàng dự kiến: estimated_delivery_time
+1.10. Xem lịch sử đơn hàng
+Chức năng: Người dùng có thể xem các đơn hàng đã đặt trong quá khứ.
+Dữ liệu cần hiển thị:
+Mã đơn hàng: order_id
+Danh sách món trong đơn hàng: ordered_items[]
+Tên món ăn: food_name
+Số lượng: quantity
+Giá tổng cộng: total_price
+Ngày đặt hàng: order_date
+Trạng thái: order_status (đã giao/đã hủy)
+1.11. Nhận thông báo
+Chức năng: Người dùng nhận thông báo về tình trạng đơn hàng, chương trình khuyến mãi hoặc thay đổi món ăn.
+Dữ liệu cần thiết:
+Tiêu đề thông báo: notification_title
+Nội dung thông báo: notification_content
+Thời gian gửi thông báo: notification_time
+1.12. Đánh giá món ăn
+Chức năng: Người dùng có thể để lại đánh giá và phản hồi về các món đã dùng.
+Dữ liệu cần thiết:
+Món ăn đã đặt: ordered_item
+Đánh giá (sao): rating (VD: 1-5 sao)
+Bình luận: comment
+1.13. Gợi ý món ăn
+Chức năng: Hệ thống đề xuất món ăn dựa trên thói quen đặt món của người dùng hoặc các món ăn phổ biến.
+Dữ liệu cần thiết:
+Lịch sử đặt món: order_history[]
+Món ăn phổ biến: popular_items[]
+Món ăn đề xuất: recommended_items[]
+1.14. Ưu đãi và mã giảm giá cá nhân hóa
+Chức năng: Người dùng nhận các mã giảm giá, khuyến mãi dựa trên lịch sử đặt hàng hoặc dịp đặc biệt.
+Dữ liệu cần thiết:
+Mã giảm giá: coupon_code
+Nội dung ưu đãi: promotion_content
+Thời hạn mã giảm giá: coupon_expiry
+1.15. Chia sẻ đơn hàng
+Chức năng: Người dùng có thể chia sẻ đơn hàng với người khác để cùng đặt và thanh toán.
+Dữ liệu cần thiết:
+Mã chia sẻ đơn hàng: shared_order_code
+Danh sách người nhận: shared_with[]
+Liên kết chia sẻ: share_link
+1.16. Theo dõi thời gian giao hàng trực tiếp
+Chức năng: Hệ thống cung cấp tính năng theo dõi vị trí của đơn hàng (món ăn) sau khi đã được giao.
+Dữ liệu cần hiển thị:
+Vị trí giao hàng hiện tại: current_location
+Thời gian giao dự kiến (ETA): estimated_time_of_arrival
+Bản đồ theo dõi: tracking_map
+
+
+
+
+
+
+
+1. Đăng nhập/Đăng ký quản lý
+Chức năng: Nhân viên căng tin cần đăng nhập vào hệ thống quản trị để thực hiện các thao tác quản lý.
+Dữ liệu cần thiết:
+Địa chỉ email hoặc số điện thoại: email_or_phone
+Mật khẩu: password
+Vai trò: role (Nhân viên căng tin)
+2. Quản lý món ăn
+2.1. Thêm, sửa, xóa món ăn từ thực đơn
+Chức năng: Nhân viên có thể thêm mới, chỉnh sửa, hoặc xóa các món ăn từ thực đơn.
+
+Dữ liệu cần thiết để thêm/sửa món ăn:
+
+Tên món ăn: food_name
+Mô tả món ăn: description
+Hình ảnh món ăn: image_url
+Giá món ăn: price
+Tình trạng sẵn có: availability
+Loại món ăn: category
+Thời gian chuẩn bị: preparation_time
+Số lượng nguyên liệu cần thiết: required_ingredients[]
+Tên nguyên liệu: ingredient_name
+Số lượng cần: quantity_required
+Khuyến mãi (nếu có): discount
+Dữ liệu cần thiết để xóa món ăn:
+
+Mã món ăn: food_id
+2.2. Cập nhật thông tin về món ăn
+Chức năng: Nhân viên cập nhật thông tin về món ăn bao gồm giá cả, hình ảnh, tình trạng sẵn có.
+Dữ liệu cần thiết:
+Mã món ăn: food_id
+Thông tin cần cập nhật:
+Giá: price
+Mô tả: description
+Hình ảnh: image_url
+Tình trạng sẵn có: availability
+2.3. Quản lý chương trình khuyến mãi, giảm giá cho món ăn
+Chức năng: Nhân viên có thể thêm hoặc cập nhật các chương trình khuyến mãi cho từng món ăn.
+Dữ liệu cần thiết:
+Mã món ăn: food_id
+Giá gốc: original_price
+Giá khuyến mãi: discount_price
+Thời gian áp dụng khuyến mãi: promotion_start_date, promotion_end_date
+3. Xem và xử lý đơn hàng
+3.1. Xem danh sách các đơn hàng đã nhận
+Chức năng: Nhân viên có thể xem danh sách tất cả các đơn hàng đã đặt trong hệ thống để chuẩn bị giao món.
+Dữ liệu cần hiển thị:
+Mã đơn hàng: order_id
+Tên khách hàng: customer_name
+Danh sách món ăn đã đặt: ordered_items[]
+Tên món: food_name
+Số lượng: quantity
+Ghi chú (nếu có): note
+Thời gian giao dự kiến: delivery_time
+Trạng thái đơn hàng: order_status (đang chuẩn bị, đã giao, đã hủy)
+3.2. Cập nhật trạng thái đơn hàng
+Chức năng: Nhân viên cập nhật trạng thái đơn hàng sau khi chuẩn bị xong món hoặc đã giao cho khách hàng.
+Dữ liệu cần thiết:
+Mã đơn hàng: order_id
+Trạng thái đơn hàng mới: order_status (đang chuẩn bị, đã giao, đã hủy)
+3.3. Tạo lệnh giao hàng hoặc thông báo sẵn sàng nhận hàng
+Chức năng: Sau khi món ăn đã chuẩn bị xong, nhân viên có thể tạo lệnh giao hàng hoặc thông báo cho khách hàng rằng món đã sẵn sàng.
+Dữ liệu cần thiết:
+Mã đơn hàng: order_id
+Thời gian sẵn sàng nhận món: ready_time
+4. Quản lý thời gian giao hàng
+Chức năng: Nhân viên căng tin thiết lập khung giờ hoạt động và thời gian sẵn sàng phục vụ.
+Dữ liệu cần thiết:
+Giờ mở cửa: opening_time
+Giờ đóng cửa: closing_time
+Khung giờ giao hàng: delivery_time_slots[]
+5. Thông báo cho người dùng
+5.1. Thông báo món ăn hết hàng
+Chức năng: Khi món ăn hết nguyên liệu hoặc không còn sẵn có, nhân viên gửi thông báo đến người dùng.
+Dữ liệu cần thiết:
+Tên món ăn: food_name
+Nguyên nhân hết hàng: out_of_stock_reason (VD: Hết nguyên liệu)
+Thời gian dự kiến có hàng lại (nếu có): estimated_availability_time
+5.2. Thông báo về thực đơn và sự cố
+Chức năng: Gửi thông báo cho người dùng khi thực đơn có sự thay đổi hoặc có sự cố liên quan đến đơn hàng.
+Dữ liệu cần thiết:
+Tiêu đề thông báo: notification_title
+Nội dung thông báo: notification_content
+6. Báo cáo thống kê
+6.1. Xem báo cáo doanh thu theo ngày, tuần, tháng
+Chức năng: Nhân viên có thể xem các báo cáo doanh thu chi tiết theo thời gian.
+Dữ liệu cần hiển thị:
+Tổng doanh thu trong khoảng thời gian (ngày, tuần, tháng): total_revenue
+Số lượng món ăn bán ra: items_sold[]
+Tên món ăn: food_name
+Số lượng bán: quantity_sold
+6.2. Thống kê số lượng đơn hàng và món ăn bán chạy
+Chức năng: Nhân viên có thể xem thống kê về số lượng đơn hàng và món ăn được bán chạy nhất.
+Dữ liệu cần hiển thị:
+Tổng số đơn hàng trong khoảng thời gian: total_orders
+Món ăn bán chạy: best_selling_items[]
+Tên món ăn: food_name
+Số lượng bán: quantity_sold
+7. Quản lý nguyên liệu
+7.1. Theo dõi số lượng nguyên liệu
+Chức năng: Nhân viên theo dõi số lượng nguyên liệu hiện có trong kho và số lượng đã sử dụng.
+Dữ liệu cần thiết:
+Tên nguyên liệu: ingredient_name
+Số lượng hiện có: current_stock
+Số lượng đã sử dụng: used_stock
+7.2. Tự động cập nhật tình trạng món ăn
+Chức năng: Hệ thống tự động ẩn các món ăn hết nguyên liệu hoặc thông báo cho người dùng về tình trạng này.
+Dữ liệu cần thiết:
+Món ăn: food_name
+Trạng thái món ăn: availability (còn sẵn/hết hàng)
+7.3. Dự báo nhu cầu nguyên liệu
+Chức năng: Hệ thống dự báo nhu cầu nguyên liệu dựa trên lịch sử đặt hàng.
+Dữ liệu cần thiết:
+Lịch sử đặt hàng: order_history[]
+Món ăn đã đặt: ordered_items[]
+Số lượng đã bán: quantity_sold
+Nguyên liệu cần dự báo: forecasted_ingredients[]
+Tên nguyên liệu: ingredient_name
+Dự báo số lượng cần mua: forecasted_quantity
+8. Quản lý nhà cung cấp
+8.1. Lưu trữ thông tin nhà cung cấp
+Chức năng: Quản lý thông tin liên hệ, lịch sử mua bán với các nhà cung cấp nguyên liệu.
+Dữ liệu cần lưu trữ:
+Tên nhà cung cấp: supplier_name
+Thông tin liên hệ: contact_info
+Địa chỉ: address
+Số điện thoại: phone_number
+Email: email
+Lịch sử mua bán: purchase_history[]
+Ngày mua: purchase_date
+Nguyên liệu đã mua: purchased_ingredients[]
+Số lượng: quantity
+Tổng chi phí: total_cost
+8.2. Đánh giá nhà cung cấp
+Chức năng: Nhân viên có thể đánh giá các nhà cung cấp dựa trên chất lượng và dịch vụ.
+Dữ liệu cần thiết:
+Nhà cung cấp: supplier_name
+Đánh giá (sao): rating
+Phản hồi: feedback
+
+
+
+
+
+
+
+
+
+
+Phân tích chi tiết chức năng và đầu mục dữ liệu cho Admin
+1. Quản lý tài khoản người dùng
+1.1. Thêm, xóa, hoặc vô hiệu hóa tài khoản người dùng và nhân viên căng tin
+Chức năng: Admin có quyền thêm mới, xóa, hoặc vô hiệu hóa tài khoản người dùng và nhân viên căng tin.
+Dữ liệu cần thiết:
+Tên tài khoản: username
+Email: email
+Vai trò: role (người dùng, nhân viên căng tin, admin)
+Mật khẩu: password
+Trạng thái tài khoản: account_status (hoạt động, vô hiệu hóa)
+1.2. Thiết lập quyền hạn cho các tài khoản
+Chức năng: Admin thiết lập quyền hạn cho các tài khoản trong hệ thống (người dùng, nhân viên căng tin, quản trị viên).
+Dữ liệu cần thiết:
+Tên tài khoản: username
+Vai trò: role (người dùng, nhân viên căng tin, admin)
+Các quyền hạn cụ thể: permissions[] (VD: quản lý món ăn, quản lý đơn hàng, xem báo cáo, v.v.)
+2. Xem báo cáo tổng quát
+2.1. Báo cáo doanh thu
+Chức năng: Admin xem báo cáo tổng quát về doanh thu của hệ thống theo thời gian (ngày, tuần, tháng, năm).
+Dữ liệu cần hiển thị:
+Tổng doanh thu theo khoảng thời gian: total_revenue
+Doanh thu theo danh mục món ăn: category_revenue[]
+Loại món ăn: category
+Doanh thu: revenue
+2.2. Tần suất đặt hàng
+Chức năng: Admin theo dõi tần suất đặt hàng để phân tích xu hướng người dùng.
+Dữ liệu cần hiển thị:
+Số lượng đơn hàng theo thời gian: order_count[]
+Ngày: date
+Số lượng đơn hàng: order_count
+2.3. Món ăn được ưa chuộng
+Chức năng: Xem danh sách các món ăn được đặt nhiều nhất theo khoảng thời gian.
+Dữ liệu cần hiển thị:
+Tên món ăn: food_name
+Số lượng đã bán: quantity_sold
+Doanh thu từ món ăn: food_revenue
+2.4. Hoạt động của hệ thống
+Chức năng: Admin theo dõi hoạt động của hệ thống để đảm bảo mọi thứ hoạt động trơn tru.
+Dữ liệu cần hiển thị:
+Tổng số đơn hàng: total_orders
+Tổng số người dùng: total_users
+Tổng số nhân viên căng tin: total_canteen_staff
+Lượng đơn hàng theo khung giờ: orders_by_time
+3. Quản lý hệ thống thanh toán
+3.1. Cấu hình và tích hợp các phương thức thanh toán trực tuyến
+Chức năng: Admin có thể cấu hình và tích hợp các phương thức thanh toán trực tuyến vào hệ thống (ví điện tử, thẻ ngân hàng, PayPal, v.v.).
+Dữ liệu cần thiết:
+Phương thức thanh toán: payment_method
+Trạng thái tích hợp: integration_status (đang hoạt động, không hoạt động)
+Thông tin cấu hình API của phương thức thanh toán: api_config
+4. Quản lý dữ liệu hệ thống
+4.1. Quản lý cấu hình hệ thống
+Chức năng: Đảm bảo cấu hình hệ thống phù hợp và đảm bảo hệ thống hoạt động ổn định.
+Dữ liệu cần quản lý:
+Cấu hình máy chủ: server_config[]
+Các cài đặt bảo mật: security_settings[]
+Phiên bản hệ thống: system_version
+4.2. Kiểm soát dung lượng lưu trữ và dữ liệu giao dịch
+Chức năng: Theo dõi và quản lý dung lượng lưu trữ và dữ liệu giao dịch để tối ưu hóa hoạt động của hệ thống.
+Dữ liệu cần quản lý:
+Dung lượng lưu trữ hiện tại: current_storage
+Tỷ lệ sử dụng: storage_usage_percentage
+Dung lượng dữ liệu giao dịch: transaction_data_size
+4.3. Theo dõi log hệ thống
+Chức năng: Ghi lại tất cả các hoạt động trong hệ thống như đăng nhập, đặt hàng, thay đổi dữ liệu để kiểm soát các sự kiện bất thường.
+Dữ liệu cần lưu trữ:
+Thời gian hoạt động: timestamp
+Loại hoạt động: activity_type (VD: đăng nhập, đặt hàng, cập nhật thông tin)
+Người thực hiện: user
+Thông tin chi tiết về hoạt động: activity_details
+5. Theo dõi hoạt động hệ thống
+5.1. Giám sát toàn bộ hoạt động trong hệ thống
+Chức năng: Giám sát tất cả các hoạt động từ đặt hàng, thanh toán, cho đến quản lý của nhân viên căng tin.
+Dữ liệu cần hiển thị:
+Danh sách hoạt động gần đây: recent_activities[]
+Loại hoạt động: activity_type
+Thời gian: timestamp
+Người thực hiện: user
+Chi tiết hoạt động: activity_details
+5.2. Xem báo cáo tổng hợp về hiệu suất hoạt động của hệ thống
+Chức năng: Xem báo cáo về hiệu suất của hệ thống, bao gồm tốc độ xử lý đơn hàng, thời gian phản hồi, và các sự cố gặp phải.
+Dữ liệu cần hiển thị:
+Tốc độ xử lý đơn hàng trung bình: average_order_processing_time
+Tỷ lệ giao hàng đúng giờ: on_time_delivery_percentage
+Lượng truy cập hệ thống: system_traffic
+Số lượng lỗi gặp phải: system_errors
+6. Xử lý khiếu nại
+Chức năng: Admin tiếp nhận và xử lý các khiếu nại từ người dùng về dịch vụ và chất lượng món ăn.
+Dữ liệu cần thiết:
+Mã khiếu nại: complaint_id
+Người khiếu nại: complainant
+Nội dung khiếu nại: complaint_content
+Trạng thái xử lý: complaint_status (đã xử lý, đang xử lý)
+Phản hồi từ nhân viên: staff_response
+7. Bảo trì hệ thống
+7.1. Cập nhật và sửa lỗi hệ thống
+Chức năng: Admin đảm bảo hệ thống luôn được cập nhật và sửa lỗi khi cần thiết.
+Dữ liệu cần quản lý:
+Phiên bản hệ thống hiện tại: current_system_version
+Các bản vá lỗi: patches[]
+Lịch sử cập nhật hệ thống: update_history[]
+Ngày cập nhật: update_date
+Mô tả cập nhật: update_description
+8. Các chức năng chung cho tất cả người dùng
+8.1. Quên mật khẩu
+Chức năng: Người dùng có thể khôi phục mật khẩu qua email hoặc số điện thoại nếu quên mật khẩu.
+Dữ liệu cần thiết:
+Email hoặc số điện thoại: email_or_phone
+Mã xác thực OTP: otp_code
+Mật khẩu mới: new_password
+8.2. Thay đổi thông tin cá nhân
+Chức năng: Người dùng có thể chỉnh sửa thông tin tài khoản cá nhân như tên, số điện thoại, địa chỉ.
+Dữ liệu cần thiết:
+Tên tài khoản: username
+Thông tin cần thay đổi:
+Tên: full_name
+Số điện thoại: phone_number
+Địa chỉ: address
+8.3. Đăng xuất
+Chức năng: Người dùng có thể đăng xuất khỏi hệ thống.
+Dữ liệu cần thiết:
+Tên tài khoản: username
+Phiên đăng nhập: session_id
+
+
+
+
+
+
+

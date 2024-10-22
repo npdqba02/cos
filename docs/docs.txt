@@ -1,0 +1,17 @@
+Canteen Ordering System
+Thiết kế ý tưởng, phân tích thiết kế hệ thống, trực quan hóa, biểu đồ 
+Design UI, UX. Figma 
+
+Đề tài thesis: 
+Canteen ordering system. 
+Canteen trường, cantin lớn có nhiều quầy(nhiều quán), mỗi quán thực đơn khác nhau. 
+Thì bình thường sinh viên sẽ đến quầy order, nhân viên sẽ nhập trên hệ thống để xuất bill, 
+Sau đó cầm bill đến chỗ nhận đồ ăn đưa phiếu
+cho cô, cô dùng micro nói xuống bếp để làm món đó. 
+Món đó lên của ai thì nhận món.
+
+Thanh toán or nạp tiền vào khi đặt món và đặt giờ xuống lấy 
+
+https://www.technoduces.com/restaurant-ordering-system-demo  
+
+
